@@ -33,6 +33,7 @@ module.exports = (app) => {
     route.post('/change-password/:user_id', userController.changePassword);
     route.put('/update-story/:user_id', userController.updateStoryUser);
     route.put('/update/:user_id', userController.updateInfoUser);
+    route.get('/search',userController.searchUser)
   });
 
   //feed 

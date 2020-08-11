@@ -304,3 +304,27 @@ exports.updateStoryUser = async (req, res) => {
     })
   }
 }
+exports.searchUser = async (req, res) => {
+  req.checkQuery('q', 'q is not empty').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(200).json({ state: false, msg: errors[0].msg });
+  } else {
+    let conditions = {
+      $or: [
+        {
+          firstName: { $regex: '.*' + req.query.q.trim() + '.*', $options: '-i' }
+        },
+        {
+          lastName: { $regex: '.*' + req.query.q.trim() + '.*', $options: '-i' }
+        }
+      ]
+    }
+    User.find(conditions).lean().select('firstName lastName avatar active').exec((e, r) => {
+      if (e) res.status(200).json({ state: false, error: e });
+      else {
+        res.status(200).json({ state: true, data: r });
+      }
+    })
+  }
+}
