@@ -1,0 +1,11 @@
+{
+	"hello": "hello",
+	"emailReset_required": "emailReset_required",
+	"Xin chao": "Xin chao",
+	"connect redis success": "connect redis success",
+	"clear cache success": "clear cache success",
+	"%s connect redis success": "%s connect redis success",
+	"%s Connect cache success": "%s Connect cache success",
+	"đã set cache": "đã set cache",
+	"clear success cache": "clear success cache"
+}
