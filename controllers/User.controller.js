@@ -147,7 +147,7 @@ exports.getProfile = (req, res) => {
 exports.getAllUser = (req, res) => {
   req.checkQuery("page", ('page is number')).isInt();
   const options = {
-    select: 'firstName lastName avatar',
+    select: 'firstName lastName avatar active gender',
     page: req.query.page === undefined ? 1 : req.query.page
   };
   const errors = req.validationErrors();
