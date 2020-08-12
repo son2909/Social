@@ -6,6 +6,7 @@ const mailer = require('../helper/mailer');
 const config = require('../config/utils');
 const bcrypt = require('bcryptjs');
 const redisClient = require('../helper/redis');
+const helpers = require('../helper/lib');
 exports.postLogin = (req, res) => {
   req.checkBody('username', 'username is required').notEmpty();
   req.checkBody('password', 'password is required').notEmpty();
@@ -56,6 +57,7 @@ exports.postRegister = async (req, res) => {
       } else {
         let obj = { firstName, lastName, username, birthday, gender, email } = req.body;
         obj.password = hash;
+        obj.blug = `${helpers.StringToBlug(req.body.firstName)} ${helpers.StringToBlug(req.body.lastName)}`;
         try {
           let userUsername = await User.findOne({ username }).lean();
           let userEmail = await User.findOne({ email }).lean();
@@ -310,15 +312,9 @@ exports.searchUser = async (req, res) => {
   if (errors) {
     res.status(200).json({ state: false, msg: errors[0].msg });
   } else {
+    let txtSearch = helpers.StringToBlug(req.query.q);
     let conditions = {
-      $or: [
-        {
-          firstName: { $regex: '.*' + req.query.q.trim() + '.*', $options: '-i' }
-        },
-        {
-          lastName: { $regex: '.*' + req.query.q.trim() + '.*', $options: '-i' }
-        }
-      ]
+      blug: { $regex: '.*' +txtSearch + '.*', $options: '-i' }
     }
     User.find(conditions).lean().select('firstName lastName avatar active').exec((e, r) => {
       if (e) res.status(200).json({ state: false, error: e });

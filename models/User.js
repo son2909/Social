@@ -21,6 +21,7 @@ let UserSchema = new mongoose.Schema({
   followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
   active: { type: Boolean, default: false },
   birthday: { type: String, default: '' },
+  blug: String,
   expired: { type: Boolean, default: false }
 }, schemaOptions);
 mongoosePaginate.paginate.options = {
