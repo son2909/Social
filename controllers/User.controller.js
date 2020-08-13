@@ -51,13 +51,13 @@ exports.postRegister = async (req, res) => {
     res.status(200).json({ state: false, msg: errors[0].msg, code: 'ERR_422_WRONG_INPUT' });
   } else {
     let { password } = req.body;
+
     bcrypt.hash(password, config.saltRounds, async (err, hash) => {
       if (err) {
         res.status(200).json({ state: false, msg: err });
       } else {
         let obj = { firstName, lastName, username, birthday, gender, email } = req.body;
         obj.password = hash;
-        obj.blug = `${helpers.StringToBlug(req.body.firstName)} ${helpers.StringToBlug(req.body.lastName)}`;
         try {
           let userUsername = await User.findOne({ username }).lean();
           let userEmail = await User.findOne({ email }).lean();
@@ -314,7 +314,7 @@ exports.searchUser = async (req, res) => {
   } else {
     let txtSearch = helpers.StringToBlug(req.query.q);
     let conditions = {
-      blug: { $regex: '.*' +txtSearch + '.*', $options: '-i' }
+      slug: { $regex: '.*' + txtSearch + '.*', $options: '-i' }
     }
     User.find(conditions).lean().select('firstName lastName avatar active').exec((e, r) => {
       if (e) res.status(200).json({ state: false, error: e });

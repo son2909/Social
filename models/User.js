@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
+let slug = require('mongoose-slug-generator');
+mongoose.plugin(slug);
 const schemaOptions = {
   versionKey: false,
   timestamps: { installed_day: 'created_at' }
@@ -21,7 +23,7 @@ let UserSchema = new mongoose.Schema({
   followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
   active: { type: Boolean, default: false },
   birthday: { type: String, default: '' },
-  blug: String,
+  slug: { type: String, slug: ["firstName", "lastName"] },
   expired: { type: Boolean, default: false }
 }, schemaOptions);
 mongoosePaginate.paginate.options = {
