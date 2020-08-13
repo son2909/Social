@@ -34,6 +34,8 @@ module.exports = (app) => {
     route.put('/update-story/:user_id', userController.updateStoryUser);
     route.put('/update/:user_id', userController.updateInfoUser);
     route.get('/search',userController.searchUser)
+    route.put('/follow-user/:user_id', userController.followUser);
+    route.put('/unfollow-user/:user_id', userController.unFollowUser);
   });
 
   //feed 

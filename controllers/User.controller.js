@@ -7,6 +7,7 @@ const config = require('../config/utils');
 const bcrypt = require('bcryptjs');
 const redisClient = require('../helper/redis');
 const helpers = require('../helper/lib');
+const userService = require('../services/User');
 exports.postLogin = (req, res) => {
   req.checkBody('username', 'username is required').notEmpty();
   req.checkBody('password', 'password is required').notEmpty();
@@ -322,5 +323,45 @@ exports.searchUser = async (req, res) => {
         res.status(200).json({ state: true, data: r });
       }
     })
+  }
+}
+exports.followUser = async (req, res) => {
+  req.checkParams('user_id', 'User_id is a mongoID & notEmpty !').isMongoId();
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(200).json({ state: false, msg: errors[0].msg });
+  } else {
+    let data = { fromId: req.user.userId, toId: req.params.user_id };
+    userService.followUser(data)
+      .then(r => {
+        if (r.state) {
+          res.status(200).json({ state: true, msg: r.msg })
+        } else {
+          res.status(200).json({ state: false, msg: r.error })
+        }
+      })
+      .catch(err => {
+        res.status(200).json({ state: false, msg: err })
+      })
+  }
+}
+exports.unFollowUser = async (req, res) => {
+  req.checkParams('user_id', 'user_id is required & is a mongoID').isMongoId();
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(200).json({ state: false, msg: errors[0].msg });
+  } else {
+    let data = { fromId: req.user.userId, toId: req.params.user_id };
+    userService.unFollowUser(data)
+      .then(r => {
+        if (r.state) {
+          res.status(200).json({ state: true, msg: r.msg })
+        } else {
+          res.status(200).json({ state: false, msg: r.error })
+        }
+      })
+      .catch(err => {
+        res.status(200).json({ state: false, msg: err })
+      })
   }
 }
