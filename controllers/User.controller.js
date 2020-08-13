@@ -150,7 +150,7 @@ exports.getProfile = (req, res) => {
 exports.getAllUser = (req, res) => {
   req.checkQuery("page", ('page is number')).isInt();
   const options = {
-    select: 'firstName lastName avatar active gender',
+    select: 'firstName lastName avatar active gender followings followers',
     page: req.query.page === undefined ? 1 : req.query.page
   };
   const errors = req.validationErrors();
@@ -317,7 +317,7 @@ exports.searchUser = async (req, res) => {
     let conditions = {
       slug: { $regex: '.*' + txtSearch + '.*', $options: '-i' }
     }
-    User.find(conditions).lean().select('firstName lastName avatar active').exec((e, r) => {
+    User.find(conditions).lean().select('firstName lastName avatar active followings followers').exec((e, r) => {
       if (e) res.status(200).json({ state: false, error: e });
       else {
         res.status(200).json({ state: true, data: r });
