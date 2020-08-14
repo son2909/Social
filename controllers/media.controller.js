@@ -310,3 +310,35 @@ exports.uploadSingleImageToDriver = (req, res) => {
     });
   }
 }
+exports.updateAvatar = (req, res) => {
+  req.checkParams('user_id', 'User_id is required & is a mongoId !').isMongoId();
+  req.checkBody('location', 'location is required').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(200).json({ state: false, msg: errors[0].msg });
+  } else {
+    User.updateOne({ _id: req.params.user_id }, { avatar: req.body.location }, (e, r) => {
+      if (e) {
+        res.status(200).json({ state: false, msg: e })
+      } else {
+        res.status(200).json({ state: true, msg: 'update avatar success' });
+      }
+    })
+  }
+}
+exports.updateCoverImage = (req, res) => {
+  req.checkParams('user_id', 'User_id is required & is a mongoId !').isMongoId();
+  req.checkBody('location', 'location is required').notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(200).json({ state: false, msg: errors[0].msg });
+  } else {
+    User.updateOne({ _id: req.params.user_id }, { coverImage: req.body.location }, (e, r) => {
+      if (e) {
+        res.status(200).json({ state: false, msg: e })
+      } else {
+        res.status(200).json({ state: true, msg: 'update cover image success' });
+      }
+    })
+  }
+}

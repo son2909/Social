@@ -36,6 +36,8 @@ module.exports = (app) => {
     route.get('/search',userController.searchUser)
     route.put('/follow-user/:user_id', userController.followUser);
     route.put('/unfollow-user/:user_id', userController.unFollowUser);
+    route.put('/update-avatar/:user_id', mediaController.updateAvatar);
+    route.put('/update-cover-image/:user_id', mediaController.updateCoverImage);
   });
 
   //feed 
