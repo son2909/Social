@@ -28,12 +28,12 @@ module.exports = (app) => {
     route.get('/profile', userController.getProfile)
     route.post('/upload-image-avatar/:user_id', mediaController.uploadSingleImageToDriver);
     route.post('/upload-image-coverImage/:user_id', mediaController.uploadSingleImageCoverToDriver);
-    route.get('/get-user',redisClient.getProfileUser, userController.getProfileUser);
-    route.get('/get-all-user',redisClient.getAllUser, userController.getAllUser);
+    route.get('/get-user', redisClient.getProfileUser, userController.getProfileUser);
+    route.get('/get-all-user', redisClient.getAllUser, userController.getAllUser);
     route.post('/change-password/:user_id', userController.changePassword);
     route.put('/update-story/:user_id', userController.updateStoryUser);
     route.put('/update/:user_id', userController.updateInfoUser);
-    route.get('/search',userController.searchUser)
+    route.get('/search', userController.searchUser)
     route.put('/follow-user/:user_id', userController.followUser);
     route.put('/unfollow-user/:user_id', userController.unFollowUser);
     route.put('/update-avatar/:user_id', mediaController.updateAvatar);
@@ -42,10 +42,10 @@ module.exports = (app) => {
 
   //feed 
   router.prefix('/feed', (route) => {
-    route.post('/upload-multiple-images',mediaController.uploadMultipleImageFeedLocal);
+    route.post('/upload-multiple-images', mediaController.uploadMultipleImageFeedLocal);
   });
 
 
 
-  app.use('/api/v1', Authentication.verifyToken, router); 
+  app.use('/api/v1', Authentication.verifyToken, router);
 }

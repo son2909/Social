@@ -335,6 +335,7 @@ exports.followUser = async (req, res) => {
     userService.followUser(data)
       .then(r => {
         if (r.state) {
+          redisClient.clearData();
           res.status(200).json({ state: true, msg: r.msg })
         } else {
           res.status(200).json({ state: false, msg: r.error })
@@ -355,6 +356,7 @@ exports.unFollowUser = async (req, res) => {
     userService.unFollowUser(data)
       .then(r => {
         if (r.state) {
+          redisClient.clearData();
           res.status(200).json({ state: true, msg: r.msg })
         } else {
           res.status(200).json({ state: false, msg: r.error })
