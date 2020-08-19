@@ -367,3 +367,29 @@ exports.unFollowUser = async (req, res) => {
       })
   }
 }
+exports.setActive = (id) => {
+  return new Promise((resolve, reject) => {
+    User.updateOne({ _id: id }, { active: true }, (e, r) => {
+      if (e) reject(e);
+      else {
+        resolve(r);
+      }
+    })
+  })
+}
+exports.unSetActive = (id) => {
+  return new Promise((resolve, reject) => {
+    User.updateOne({ _id: id }, { active: false }, (e, r) => {
+      if (e) reject(e);
+      else resolve(r);
+    })
+  })
+}
+exports.getUserOnline = () => {
+  return new Promise((resolve, reject) => {
+    User.find({ active: true }).select('firstName lastName avatar active gender followings followers').lean().exec((e, r) => {
+      if (e) reject(e);
+      else resolve(r);
+    })
+  })
+}
