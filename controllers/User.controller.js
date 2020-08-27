@@ -5,7 +5,7 @@ const AuthController = require('../Auth/AuthorizationController');
 const mailer = require('../helper/mailer');
 const config = require('../config/utils');
 const bcrypt = require('bcryptjs');
-const redisClient = require('../helper/redis');
+// const redisClient = require('../helper/redis');
 const helpers = require('../helper/lib');
 const userService = require('../services/User');
 exports.postLogin = (req, res) => {
@@ -132,8 +132,8 @@ exports.getProfileUser = async (req, res) => {
       if (e) {
         res.status(200).json({ state: false, msg: e });
       } else {
-        let key = `/user/get-user?user_id=${req.query.user_id}`;
-        redisClient.setData(key, r);
+        // let key = `/user/get-user?user_id=${req.query.user_id}`;
+        // redisClient.setData(key, r);
         res.status(200).json({ state: true, data: r });
       }
     })
@@ -161,8 +161,8 @@ exports.getAllUser = (req, res) => {
       if (e) {
         res.status(200).json({ status: false, msg: e });
       } else {
-        let key = `/user/get-all-user?page=${req.query.page}`;
-        redisClient.setData(key, r);
+        // let key = `/user/get-all-user?page=${req.query.page}`;
+        // redisClient.setData(key, r);
         res.status(200).json({ status: true, data: r });
       }
     });
