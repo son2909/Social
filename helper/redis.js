@@ -1,4 +1,4 @@
-let client = require('../Auth/Auth_redis');
+// let client = require('../Auth/Auth_redis');
 exports.setData = (key, value) => {
   client.SETEX(key, 300, JSON.stringify(value));
 }

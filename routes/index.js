@@ -1,7 +1,7 @@
 const userController = require('../controllers/User.controller');
 const mediaController = require('../controllers/media.controller');
 const Authentication = require('../Auth/AuthorizationController');
-const redisClient = require('../helper/redis');
+// const redisClient = require('../helper/redis');
 module.exports = (app) => {
 
   app.get('/', (req, res) => {
@@ -28,8 +28,8 @@ module.exports = (app) => {
     route.get('/profile', userController.getProfile)
     route.post('/upload-image-avatar/:user_id', mediaController.uploadSingleImageToDriver);
     route.post('/upload-image-coverImage/:user_id', mediaController.uploadSingleImageCoverToDriver);
-    route.get('/get-user', redisClient.getProfileUser, userController.getProfileUser);
-    route.get('/get-all-user', redisClient.getAllUser, userController.getAllUser);
+    route.get('/get-user', userController.getProfileUser);
+    route.get('/get-all-user', userController.getAllUser);
     route.post('/change-password/:user_id', userController.changePassword);
     route.put('/update-story/:user_id', userController.updateStoryUser);
     route.put('/update/:user_id', userController.updateInfoUser);

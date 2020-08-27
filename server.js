@@ -32,7 +32,8 @@ io.on('connection', (socket) => {
             users[data.user_id] = socket.id;
             await userController.setActive(data.user_id);
             let useronlines = await userController.getUserOnline();
-            console.log(users);
+            console.log(useronlines);
+            console.log(users)
             io.sockets.emit('list-user', useronlines);
         } catch (error) {
             console.log(error);

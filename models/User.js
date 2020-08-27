@@ -19,8 +19,8 @@ let UserSchema = new mongoose.Schema({
   relationship: { type: Number, default: 0 }, //0: single, 1: married, 2: complex
   story: { type: String, default: '' },
   address: { type: String, default: '' },
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null, unique: true }],
-  followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null, unique: true }],
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
+  followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
   active: { type: Boolean, default: false },
   birthday: { type: String, default: '' },
   slug: { type: String, slug: ["firstName", "lastName"] },
