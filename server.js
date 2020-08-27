@@ -11,7 +11,7 @@ const RoomChat = require('./models/RoomChat.js');
 server.listen(process.env.PORT ? process.env.PORT : config.port, () => {
     console.log('%s App & socket is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
     console.log('Press CTRL-C to stop');
-}); 
+});
 function checkIsExistedUser(object, socketId) {
     for (const [key, value] of Object.entries(object)) {
         if (value === socketId) {
