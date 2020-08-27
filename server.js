@@ -22,6 +22,7 @@ function checkIsExistedUser(object, socketId) {
 }
 // server socket
 let users = {};
+
 io.on('connection', (socket) => {
     //login
     console.log('co new connect' , socket.id);
