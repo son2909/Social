@@ -30,5 +30,5 @@ mongoosePaginate.paginate.options = {
   lean: true,
   limit: 10
 };
-UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(mongoosePaginate); 
 module.exports = mongoose.model("user", UserSchema);
