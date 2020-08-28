@@ -7,6 +7,7 @@ const expressStatusMonitor = require('express-status-monitor');
 const app = express();
 require('dotenv').config();
 const cp = require('cookie-parser');
+const expressValidator = require('express-validator');
 const cors = require('cors');
 const logger = require('morgan');
 const chalk = require('chalk');
@@ -78,6 +79,9 @@ app.get('/', (req, res) => {
 });
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+app.use(expressValidator());
+app.use(expressStatusMonitor());
+app.use(compression());
 app.set('port', process.env.PORT || 3001);
 require('./routes')(app);
 mongoose.connect(process.env.DB ? process.env.DB : Constant.db, { useNewUrlParser: true, useUnifiedTopology: true }, (err, rs) => {
