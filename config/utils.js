@@ -1,5 +1,5 @@
 module.exports = {
-	port: process.env.PORT || 3001,
+	port: 3001,
 	db: 'mongodb+srv://ahtuser:Admin1324@quanlytruonghoc-urj1l.mongodb.net/i-social?retryWrites=true&w=majority',
 	localDB:'mongodb://localhost:27017/social_aht',
 	secret: 'i-social-aht',
