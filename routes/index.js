@@ -1,6 +1,8 @@
 const userController = require('../controllers/User.controller');
 const mediaController = require('../controllers/media.controller');
 const Authentication = require('../Auth/AuthorizationController');
+const roomConstroller = require('../controllers/roomChat.controller');
+const messageConstroller = require('../controllers/message.controller');
 // const redisClient = require('../helper/redis');
 module.exports = (app) => {
 
@@ -39,7 +41,16 @@ module.exports = (app) => {
     route.put('/update-avatar/:user_id', mediaController.updateAvatar);
     route.put('/update-cover-image/:user_id', mediaController.updateCoverImage);
   });
-
+  //room 
+  router.prefix('/room', (route) => {
+    route.post('/set-room', roomConstroller.setRoom);
+  })
+  //message
+  router.prefix('/message', (route) => {
+    route.post('/set-message', messageConstroller.setMessage);
+    route.get('/history/:room_id', messageConstroller.getHistory);
+    route.get('/more-history-message/:room_id/:page', messageConstroller.getMoreHistoryMessage);
+  })
   //feed 
   router.prefix('/feed', (route) => {
     route.post('/upload-multiple-images', mediaController.uploadMultipleImageFeedLocal);

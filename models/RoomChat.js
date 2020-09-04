@@ -7,7 +7,6 @@ const schemaOptions = {
 };
 
 let RoomChatSchema = new mongoose.Schema({
-  name: {type: String, default: ''},
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }]
 }, schemaOptions);
 

@@ -5,11 +5,11 @@ var chalk = require('chalk');
 const config = require('./config/utils');
 
 const userController = require('./controllers/User.controller');
-const RoomChat = require('./models/RoomChat.js');
+const messageConstroller = require('./controllers/message.controller');
 const io = require('socket.io')(server);
 
 server.listen(process.env.PORT ? process.env.PORT : config.port, () => {
-    console.log('%s App & socket is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
+    console.log('%s App & socket is running at http://localhost:%d in %s mode', chalk.green('✓'), Number(process.env.PORT ? process.env.PORT : config.port), app.get('env'));
     console.log('Press CTRL-C to stop');
 });
 function checkIsExistedUser(object, socketId) {
@@ -21,27 +21,42 @@ function checkIsExistedUser(object, socketId) {
     return false;
 }
 // server socket
-let users = {};
-
+let userSocket = {};
 io.on('connection', (socket) => {
     socket.on('online', async (data) => { //data: {user_id}
-        // console.log('socket connection :', socket);
-        console.log({ data });
         try {
-            users[data.user_id] = socket.id;
+            userSocket[data.user_id] = socket.id;
             await userController.setActive(data.user_id);
             let useronlines = await userController.getUserOnline();
-            console.log(useronlines);
-            console.log(users)
             io.sockets.emit('list-user', useronlines);
         } catch (error) {
             console.log(error);
         }
     })
-    //logout
+    // join room when change page
+    socket.on("setRoom", (data) => {
+        socket.join(`${data.id_room}`);
+
+    })
+    // out room when change page
+    socket.on('outRoom', (data) => {
+        socket.leave(`${data.id_room}`);
+    })
+    // send-message
+    socket.on('client-send-message', (data) => {
+        io.to(data.id_room).emit("server-send-message", data);
+    })
+    // typing....
+    socket.on('focusin', (data) => {
+        socket.broadcast.to(data.id_room).emit("typing", "typing...");
+    })
+    socket.on('focusout', (data) => {
+        socket.broadcast.to(data.id_room).emit("focusout");
+    })
+    // logout
     socket.on('logout', async (data) => {
         try {
-            delete users[data.user_id];
+            delete userSocket[data.user_id];
             await userController.unSetActive(data.user_id);
             let useronlines = await userController.getUserOnline();
             io.sockets.emit('list-user', useronlines);
@@ -50,19 +65,16 @@ io.on('connection', (socket) => {
         }
     })
     socket.on('disconnect', async () => {
-        console.log('socket disconnect: ', socket.id);
         try {
-            let key = checkIsExistedUser(users, socket.id);
+            let key = checkIsExistedUser(userSocket, socket.id);
             if (key) {
-                delete users[key];
-                await userController.unSetActive(key);
+                await userController.unSetActive(String(key));
+                await userController.unSetActive(String(key));
                 let useronlines = await userController.getUserOnline();
-                console.log(users);
                 io.sockets.emit('list-user', useronlines);
             }
-
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     })
 })

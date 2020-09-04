@@ -10,7 +10,7 @@ let MessageSchema = new mongoose.Schema({
   roomId: { type: mongoose.Schema.Types.ObjectId, ref: 'room_chat' },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
   content: String,
-  viewed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  viewed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
   type: { type: Number, default: 0 }, //0 :text, 1:image, 2 :file,
 }, schemaOptions);
 
