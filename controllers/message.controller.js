@@ -25,12 +25,12 @@ exports.setMessage = (req, res) => {
   }
 }
 exports.getHistory = (req, res) => {
-  req.checkParams('user_id', 'User_id is required & is a mongoId !').isMongoId();
+  req.checkParams('room_id', 'User_id is required & is a mongoId !').isMongoId();
   const errors = req.validationErrors();
   if (errors) {
     res.status(200).json({ state: false, msg: errors[0].msg });
   } else {
-    Message.find({ roomId: req.params.user_id })
+    Message.find({ roomId: req.params.room_id })
       .populate({ path: 'userId', select: 'firstName lastName avatar' })
       .sort({ created_at: -1 })
       .limit(10)

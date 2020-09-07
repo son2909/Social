@@ -35,12 +35,16 @@ io.on('connection', (socket) => {
     })
     // join room when change page
     socket.on("setRoom", (data) => {
-        socket.join(`${data.id_room}`);
+        if (data) {
+            socket.join(`${data.id_room}`);
+        }
 
     })
     // out room when change page
     socket.on('outRoom', (data) => {
-        socket.leave(`${data.id_room}`);
+        if (data) {
+            socket.leave(`${data.id_room}`);
+        }
     })
     // send-message
     socket.on('client-send-message', (data) => {
